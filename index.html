@@ -251,17 +251,34 @@
 
     function handleEnter() {
       this.classList.add('trigger-enter');
-
       // ***IMPORTANT***
       // If this was a normal function, "this" would change to "Window" since it is inside a function
       // Using an arrow function causes "this" to inherit from the parent function
-      setTimeout(() => {
-        this.classList.add('trigger-enter-active');
-      }, 150);
+      setTimeout(() => this.classList.add('trigger-enter-active'), 150);
+
+      background.classList.add('open')
+
+      const dropdown = this.querySelector('.dropdown');
+
+      // getBoundingClientRect gets the size of the element in pixels relative to the page
+      const dropdownCoords = dropdown.getBoundingClientRect();
+      const navCoords = nav.getBoundingClientRect();
+      const coords = {
+        height: dropdownCoords.height,
+        width: dropdownCoords.width,
+        top: dropdownCoords.top - navCoords.top,
+        left: dropdownCoords.left - navCoords.left,
+      };
+      background.style.setProperty('width', `${coords.width}px`)
+      background.style.setProperty('height', `${coords.height}px`)
+      background.style.transform = `translate(${coords.left}px, ${coords.top}px)`;
+
+
     }
 
     function handleLeave() {
-      console.log('Leave');
+      this.classList.remove('trigger-enter', 'trigger-enter-active');
+      background.classList.remove('open')
     }
 
     triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
