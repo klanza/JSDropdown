@@ -254,7 +254,15 @@
       // ***IMPORTANT***
       // If this was a normal function, "this" would change to "Window" since it is inside a function
       // Using an arrow function causes "this" to inherit from the parent function
-      setTimeout(() => this.classList.add('trigger-enter-active'), 150);
+
+      // setTimeout(() => {
+      //   if (this.classList.contains('trigger-enter')) {
+      //     this.classList.add('trigger-enter-active')
+      //   }
+      // }, 150)
+
+      // ***** OR ***** 
+      setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
 
       background.classList.add('open')
 
@@ -266,6 +274,7 @@
       const coords = {
         height: dropdownCoords.height,
         width: dropdownCoords.width,
+        //  Since the nav is nested, you have to include the dimensions of the nested elements
         top: dropdownCoords.top - navCoords.top,
         left: dropdownCoords.left - navCoords.left,
       };
@@ -281,6 +290,7 @@
       background.classList.remove('open')
     }
 
+    // Event listeners for moving over nav element
     triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
     triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
 
